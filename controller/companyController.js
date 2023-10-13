@@ -3,10 +3,10 @@ const companyService = require("../service/companyService");
 const createCompany = async (req, res) => {
   try {
     const { name, description } = req.body;
-    const createdBy = req.user.id; // Assuming user ID is stored in req.user after authentication
-    console.log(req.user.role)
-    // Check if the user is superAdmin (you should have a middleware to ensure this)
-    if (req.user.role !== "superAdmin") {
+    const user = req.user;
+
+    // Check if the user is superAdmin
+    if (user.role !== "superAdmin") {
       throw new Error("Only superAdmins can create companies.");
     }
 
@@ -14,7 +14,7 @@ const createCompany = async (req, res) => {
     const newCompany = await companyService.createCompany(
       name,
       description,
-      createdBy
+      user.id
     );
 
     // Return success response with the created company object

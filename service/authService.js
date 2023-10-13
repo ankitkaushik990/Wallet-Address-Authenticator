@@ -13,18 +13,7 @@ const registerSuperAdmin = async (
     // Check if the secret code matches
     const superadminSecretCode = process.env.SUPERADMIN_SECRET_CODE;
 
-    // bcrypt.compare(secretCode, superadminSecretCode).then(
-    //   (isSecretCodeValid = () => {
-    //     if (!isSecretCodeValid) throw new Error("Invalid secret code");
-    //   })
-    // );
-
-    // console.log(isSecretCodeValid);
-    // if (!isSecretCodeValid) {
-    //   throw new Error("Invalid secret code");
-    // }
-
-    // without the use of bcrypt
+   
 
     if (superadminSecretCode !== secretCode) {
       throw new Error("Invalid secret code");
