@@ -56,6 +56,26 @@ const createEmp = async (req, res) => {
   }
 };
 
+
+
+
+
+const updateEmp = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, phone } = req.body;
+
+    await empService.updateEmp(userId, name, phone);
+    return res
+      .status(201)
+      .json({ message: "information updatedn successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err);
+  }
+};
+
 module.exports = {
   createEmp,
+  updateEmp,
 };

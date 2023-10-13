@@ -1,8 +1,5 @@
-const User = require("../model/user")
-
-
-
-
+const bcrypt = require("bcrypt");
+const User = require("../model/user");
 
 const registerSuperAdmin = async (
   name,
@@ -15,11 +12,26 @@ const registerSuperAdmin = async (
   try {
     // Check if the secret code matches
     const superadminSecretCode = process.env.SUPERADMIN_SECRET_CODE;
-    if (secretCode !== superadminSecretCode) {
+
+    // bcrypt.compare(secretCode, superadminSecretCode).then(
+    //   (isSecretCodeValid = () => {
+    //     if (!isSecretCodeValid) throw new Error("Invalid secret code");
+    //   })
+    // );
+
+    // console.log(isSecretCodeValid);
+    // if (!isSecretCodeValid) {
+    //   throw new Error("Invalid secret code");
+    // }
+
+    // without the use of bcrypt
+
+    if (superadminSecretCode !== secretCode) {
       throw new Error("Invalid secret code");
     }
 
     // Check if the user already exists
+
     const existingUser = await User.findOne({
       where: { email: email },
     });

@@ -61,8 +61,29 @@ const doesCompanyBelongToUser = async (companyId, loggeduser) => {
   }
 };
 
+const updateEmp = async (userId, name, phone) => {
+  try {
+    const emp = await Emp.findOne({
+      where: { id: userId },
+    });
+
+    if (emp) {
+      // Update user details
+      emp.name = name;
+      emp.phone = phone;
+      await emp.save(); // Save the changes to the database
+      return emp; // Return the updated user object
+    } else {
+      throw new Error("User not found"); // Throw an error if user with given ID is not found
+    }
+  } catch (err) {
+    throw err; // Throw any error that occurs during the process
+  }
+};
+
 module.exports = {
   createEmp,
   isAdmin,
   doesCompanyBelongToUser,
+  updateEmp,
 };
