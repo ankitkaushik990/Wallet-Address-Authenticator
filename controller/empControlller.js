@@ -1,14 +1,6 @@
 const logger = require("../config/logger.config");
 const empService = require("../service/empService");
-const ethers = require("ethers");
-
-function generateRandomWallet() {
-  const randomWallet = ethers.Wallet.createRandom();
-  const address = randomWallet.address;
-  const publicKey = randomWallet.publicKey;
-  const privateKey = randomWallet.privateKey;
-  return { address, privateKey, publicKey };
-}
+const { generateRandomWallet } = require("../utils/etherGen");
 
 const createEmp = async (req, res) => {
   try {
@@ -24,7 +16,7 @@ const createEmp = async (req, res) => {
     const isAdmin = await empService.isAdmin(userId);
 
     if (!isAdmin) {
-      return res.status(403).json({ error: "Unauthorized to create admin" });
+      return res.status(403).send({ error: "Unauthorized to create employee" });
     }
 
     // Check if the company belongs to the logged-in user
@@ -36,7 +28,7 @@ const createEmp = async (req, res) => {
     if (!doesCompanyBelongToUser) {
       return res
         .status(403)
-        .json({ error: "Unauthorized to create employee for this company" });
+        .send({ error: "Unauthorized to create employee for this company" });
     }
 
     // Create the admin
@@ -49,10 +41,12 @@ const createEmp = async (req, res) => {
       userId
     );
 
-    return res.status(201).json({ emp, privatekey: privateKey });
+    return res.status(201).send({ emp, privatekey: privateKey });
   } catch (error) {
     logger.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res
+      .status(400)
+      .send({ error: "something went wrong , please re-check details" });
   }
 };
 
@@ -64,7 +58,7 @@ const updateEmp = async (req, res) => {
     await empService.updateEmp(userId, name, phone);
     return res
       .status(201)
-      .json({ message: "information updatedn successfully" });
+      .send({ message: "information updated successfully" });
   } catch (err) {
     logger.error(err);
     return res.status(400).send(err);

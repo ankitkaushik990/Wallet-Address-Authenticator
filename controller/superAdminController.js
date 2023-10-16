@@ -1,15 +1,10 @@
 const bcrypt = require("bcrypt");
 const authService = require("../service/superAdminService");
+const { generateRandomWallet } = require("../utils/etherGen");
 const passport = require("passport");
 const ethers = require("ethers");
 
-function generateRandomWallet() {
-  const randomWallet = ethers.Wallet.createRandom();
-  const address = randomWallet.address;
-  const publicKey = randomWallet.publicKey;
-  const privateKey = randomWallet.privateKey;
-  return { address, privateKey, publicKey };
-}
+
 
 const registerSuperAdmin = async (req, res) => {
   try {

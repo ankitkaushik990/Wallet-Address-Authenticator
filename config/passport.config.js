@@ -8,8 +8,8 @@ exports.initializingPassport = (passport) => {
   passport.use(
     new localStrategy(
       {
-        usernameField: "email", // Specify the email field
-        passwordField: "privatekey", // Specify the private key field
+        usernameField: "email",
+        passwordField: "privatekey",
       },
       async (email, privatekey, done) => {
         try {

@@ -1,14 +1,6 @@
 const logger = require("../config/logger.config");
 const AdminService = require("../service/adminService");
-const ethers = require("ethers");
-
-function generateRandomWallet() {
-  const randomWallet = ethers.Wallet.createRandom();
-  const address = randomWallet.address;
-  const publicKey = randomWallet.publicKey;
-  const privateKey = randomWallet.privateKey;
-  return { address, privateKey, publicKey };
-}
+const { generateRandomWallet } = require("../utils/etherGen");
 
 const createAdmin = async (req, res) => {
   try {

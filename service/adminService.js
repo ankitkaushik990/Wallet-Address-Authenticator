@@ -56,7 +56,6 @@ const doesCompanyBelongToUser = async (companyId, userId) => {
 
     // Check if the company was created by the user with the given userId
     const belongsToUser = company.createdBy == userId;
-    // const belongsToUser = parseInt(company.createdBy, 10) === parseInt(userId, 10);
     logger.info("belongsToUser:", belongsToUser);
 
     return belongsToUser;
