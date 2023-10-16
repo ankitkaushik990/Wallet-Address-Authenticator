@@ -5,7 +5,7 @@ const {
   registerSuperAdmin,
   loginUser,
   logoutUser,
-} = require("../controller/authController");
+} = require("../controller/superAdminController");
 const { isAuthenticated } = require("../config/passport.config");
 
 router.post("/login", loginUser, (req, res) => {

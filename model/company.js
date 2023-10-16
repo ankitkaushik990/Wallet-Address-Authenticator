@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
-const User =require("./user")
+const User = require("./superAdmin");
 
 const Company = sequelize.define(
   "company_tables",

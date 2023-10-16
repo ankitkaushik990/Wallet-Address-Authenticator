@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const authService = require("../service/authService");
+const authService = require("../service/superAdminService");
 const passport = require("passport");
 const ethers = require("ethers");
 

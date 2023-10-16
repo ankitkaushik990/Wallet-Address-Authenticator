@@ -14,10 +14,10 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Serve Swagger JSON directly
-app.get("/swagger.json", (req, res) => {
-  res.setHeader("Content-Type", "application/json");
-  res.send(swaggerDocument);
-});
+// app.get("/swagger.json", (req, res) => {
+//   res.setHeader("Content-Type", "application/json");
+//   res.send(swaggerDocument);
+// });
 
 // Serve Swagger UI using swagger.json
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));

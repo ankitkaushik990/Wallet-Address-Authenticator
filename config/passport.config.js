@@ -1,7 +1,7 @@
 const localStrategy = require("passport-local").Strategy;
 const ethers = require("ethers");
 const Admin = require("../model/admin");
-const superAdmin = require("../model/user");
+const superAdmin = require("../model/superAdmin");
 const Employee = require("../model/employee");
 
 exports.initializingPassport = (passport) => {

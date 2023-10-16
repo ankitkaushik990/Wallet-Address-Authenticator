@@ -1,5 +1,5 @@
 const Company = require("../model/company");
-const User = require("../model/user"); // Assuming you have a User model
+const User = require("../model/superAdmin"); // Assuming you have a User model
 
 const createCompany = async (name, description, createdBy) => {
   try {

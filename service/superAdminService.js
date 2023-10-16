@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const User = require("../model/user");
+const User = require("../model/superAdmin");
 
 const registerSuperAdmin = async (
   name,
@@ -12,8 +12,6 @@ const registerSuperAdmin = async (
   try {
     // Check if the secret code matches
     const superadminSecretCode = process.env.SUPERADMIN_SECRET_CODE;
-
-   
 
     if (superadminSecretCode !== secretCode) {
       throw new Error("Invalid secret code");

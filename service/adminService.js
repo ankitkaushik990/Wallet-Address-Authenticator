@@ -1,5 +1,5 @@
 const  Admin = require("../model/admin");
-const superAdmin  = require("../model/user");
+const superAdmin = require("../model/superAdmin");
 const Company= require("../model/company")
 
 const createAdmin = async (

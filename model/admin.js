@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/dbconfig");
-const SuperAdmin = require("./user"); // Import the SuperAdmin model
+const SuperAdmin = require("./superAdmin"); // Import the SuperAdmin model
 const Company = require("./company")
 
 const Admin = sequelize.define(
