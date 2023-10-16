@@ -21,6 +21,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
+
                 "properties": {
                   "email": {
                     "type": "string",
@@ -28,7 +29,7 @@
                   },
                   "privatekey": {
                     "type": "string",
-                    "example": "0x837379f18b1b603eb1f88a281c3e19e1151459a1f3696ad20df89c32fde99a86"
+                    "example": "0x837379f18b1b603eb1f88a281c3e19e1dfnjv51459a1f3696ad20df89c32fde99a86"
                   }
                 },
                 "required": ["email", "privatekey"]
@@ -49,7 +50,7 @@
     "/user/register": {
       "post": {
         "summary": "Register User",
-        "description": "Endpoint for registering a new user.",
+        "description": "Endpoint for registering a new superAdmin.",
         "requestBody": {
           "description": "User registration details.",
           "content": {
@@ -81,7 +82,7 @@
         },
         "responses": {
           "201": {
-            "description": "User registered successfully."
+            "description": "superAdmin registered successfully."
           },
           "400": {
             "description": "Bad request."
@@ -90,7 +91,7 @@
             "description": "Unauthorized. Invalid secret code."
           },
           "409": {
-            "description": "User already exists."
+            "description": "superAdmin already exists."
           }
         }
       }
