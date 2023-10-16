@@ -1,11 +1,13 @@
 const Company = require("../model/company");
 const User = require("../model/superAdmin"); // Assuming you have a User model
 
+const logger = require("../config/logger.config");
+
 const createCompany = async (name, description, createdBy) => {
   try {
     // Find the user by ID from the database
     const user = await User.findByPk(createdBy);
-    console.log(user);
+    logger.info(user);
     // Check if the user exists and their role is superAdmin
     if (!user || user.role !== "superAdmin") {
       throw new Error("Only superAdmins can create companies.");

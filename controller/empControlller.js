@@ -1,3 +1,4 @@
+const logger = require("../config/logger.config");
 const empService = require("../service/empService");
 const ethers = require("ethers");
 
@@ -12,9 +13,8 @@ function generateRandomWallet() {
 const createEmp = async (req, res) => {
   try {
     const userId = req.user.id;
-      const loggeduser = req.user;
-      console.log(loggeduser);
-      console.log(loggeduser.companyId)
+    const loggeduser = req.user;
+
     const { address, privateKey } = generateRandomWallet();
     const walletAddress = address;
 
@@ -51,14 +51,10 @@ const createEmp = async (req, res) => {
 
     return res.status(201).json({ emp, privatekey: privateKey });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
-
-
 
 const updateEmp = async (req, res) => {
   try {
@@ -70,7 +66,7 @@ const updateEmp = async (req, res) => {
       .status(201)
       .json({ message: "information updatedn successfully" });
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return res.status(400).send(err);
   }
 };

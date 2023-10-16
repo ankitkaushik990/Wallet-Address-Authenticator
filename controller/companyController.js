@@ -1,4 +1,5 @@
 const companyService = require("../service/companyService");
+const logger = require("../config/logger.config");
 
 const createCompany = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ const createCompany = async (req, res) => {
     // Return success response with the created company object
     res.status(201).json(newCompany);
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     res.status(401).send(err.message); // Use 401 Unauthorized status code for unauthorized access
   }
 };

@@ -2,6 +2,10 @@ const  Admin = require("../model/admin");
 const superAdmin = require("../model/superAdmin");
 const Company= require("../model/company")
 
+
+
+const logger = require("../config/logger.config");
+
 const createAdmin = async (
   name,
   email,
@@ -26,8 +30,6 @@ const createAdmin = async (
   }
 };
 
-
-
 const isSuperAdmin = async (userId) => {
   try {
     const user = await superAdmin.findByPk(userId);
@@ -44,25 +46,18 @@ const isSuperAdmin = async (userId) => {
   }
 };
 
-
-
 const doesCompanyBelongToUser = async (companyId, userId) => {
-    try {
-      
+  try {
     const company = await Company.findByPk(companyId);
 
     if (!company) {
       throw new Error("Company not found");
     }
 
-    console.log("companyId:", companyId);
-    console.log("createdBy:", company.createdBy);
-    console.log("userId:", userId);
-
     // Check if the company was created by the user with the given userId
-        const belongsToUser = company.createdBy ==userId;
-        // const belongsToUser = parseInt(company.createdBy, 10) === parseInt(userId, 10);
-    console.log("belongsToUser:", belongsToUser);
+    const belongsToUser = company.createdBy == userId;
+    // const belongsToUser = parseInt(company.createdBy, 10) === parseInt(userId, 10);
+    logger.info("belongsToUser:", belongsToUser);
 
     return belongsToUser;
   } catch (error) {

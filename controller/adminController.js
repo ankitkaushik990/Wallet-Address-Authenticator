@@ -1,3 +1,4 @@
+const logger = require("../config/logger.config");
 const AdminService = require("../service/adminService");
 const ethers = require("ethers");
 
@@ -49,15 +50,11 @@ const createAdmin = async (req, res) => {
 
     return res.status(201).json({ admin, privatekey: privateKey });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-
-
-
 module.exports = {
   createAdmin,
-
 };

@@ -5,6 +5,7 @@ const passport = require("passport");
 const session = require("express-session");
 const swaggerUI = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+const logger = require("./config/logger.config");
 
 const db = require("./config/dbconfig");
 const routing = require("./routes/index.route");
@@ -43,5 +44,5 @@ db.sync();
 app.use("/", routing);
 
 app.listen(PORT, () => {
-  console.log(`App connected successfully at http://localhost:${PORT}`);
+  logger.info(`App connected successfully at http://localhost:${PORT}`);
 });

@@ -2,6 +2,10 @@ const Emp = require("../model/employee");
 const Admin = require("../model/admin");
 const Company = require("../model/company");
 
+
+
+const logger = require("../config/logger.config");
+
 const createEmp = async (
   name,
   email,
@@ -53,7 +57,7 @@ const doesCompanyBelongToUser = async (companyId, loggeduser) => {
     // Check if the admin company id === company id 
     const belongsTocomp= companyId === loggeduser.companyId;
     
-    console.log("belongsTocomp:", belongsTocomp);
+    logger.info("belongsTocomp:", belongsTocomp);
 
     return belongsTocomp;
   } catch (error) {

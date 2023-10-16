@@ -1,5 +1,6 @@
 
 const { Sequelize } = require("sequelize");
+const logger = require("./logger.config");
 
 const dbName = process.env.DBNAME;
 const dbUser = process.env.DBUSER;
@@ -12,14 +13,15 @@ const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   port: dbPort,
   dialect: "postgres", // Specify the PostgreSQL dialect
   timezone: "+05:30",
+  logging: false,
 });
 
 async function connectToDb() {
   try {
     await sequelize.authenticate();
-    console.log("Connected to PostgreSQL database successfully");
+    logger.info("Connected to PostgreSQL database successfully");
   } catch (error) {
-    console.error("Error occurred while connecting to the database:", error);
+    logger.error("Error occurred while connecting to the database:", error);
   }
 }
 
