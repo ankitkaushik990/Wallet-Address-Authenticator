@@ -1,0 +1,287 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ETHERS Project User API",
+    "version": "1.0.0",
+    "description": "API documentation for user functionality in the ETHERS project."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    }
+  ],
+  "paths": {
+    "/user/login": {
+      "post": {
+        "summary": "User Login",
+        "description": "Endpoint for user log in.",
+        "requestBody": {
+          "description": "User login credentials.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "email@gmail.com"
+                  },
+                  "privatekey": {
+                    "type": "string",
+                    "example": "0x837379f18b1b603eb1f88a281c3e19e1151459a1f3696ad20df89c32fde99a86"
+                  }
+                },
+                "required": ["email", "privatekey"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully."
+          },
+          "401": {
+            "description": "Invalid credentials."
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "summary": "Register User",
+        "description": "Endpoint for registering a new user.",
+        "requestBody": {
+          "description": "User registration details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "User Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "secretCode": {
+                    "type": "string",
+                    "example": "user123"
+                  }
+                },
+                "required": ["name", "email", "phone", "secretCode"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized. Invalid secret code."
+          },
+          "409": {
+            "description": "User already exists."
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "summary": "Logout User",
+        "description": "Endpoint for user to log out.",
+        "responses": {
+          "200": {
+            "description": "User logged out successfully."
+          },
+          "400": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/company/addcompany": {
+      "post": {
+        "summary": "Add Company",
+        "description": "Endpoint for creating a new company.",
+        "requestBody": {
+          "description": "Company details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Company Name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Company Description"
+                  }
+                },
+                "required": ["name", "description"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Company created successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          }
+        }
+      }
+    },
+    "/admin/add": {
+      "post": {
+        "summary": "Add Admin",
+        "description": "Endpoint for creating a new admin.",
+        "requestBody": {
+          "description": "Admin details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Admin Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "admin@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "companyId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["name", "email", "phone", "companyId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin created successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/emp/addemp": {
+      "post": {
+        "summary": "Add Employee",
+        "description": "Endpoint for creating a new employee.",
+        "requestBody": {
+          "description": "Employee details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Employee Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "employee@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "companyId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["name", "email", "phone", "companyId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/emp/update": {
+      "put": {
+        "summary": "Update Employee",
+        "description": "Endpoint for updating employee information.",
+        "requestBody": {
+          "description": "Updated employee details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Updated Employee Name"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  }
+                },
+                "required": ["name", "phone"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee information updated successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    }
+  }
+}
