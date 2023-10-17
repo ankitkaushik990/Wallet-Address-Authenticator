@@ -1,14 +1,18 @@
 const companyService = require("../service/companyService");
-const logger = require("../config/logger.config");
 const { tryCatch } = require("../utils/tryCatch");
+const AppError = require("../middleware/appError");
 
-const createCompany = tryCatch(async (req, res, ) => {
+const createCompany = tryCatch(async (req, res) => {
   const { name, description } = req.body;
   const user = req.user;
 
   // Check if the user is superAdmin
   if (user.role !== "superAdmin") {
-    throw new Error("Only superAdmins can create companies.");
+    throw new AppError(
+      "890",
+      "Unauthorized - only superAdmins are allowed to create company",
+      400
+    );
   }
 
   // Call the service to create the company

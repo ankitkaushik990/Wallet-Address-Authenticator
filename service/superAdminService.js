@@ -1,4 +1,5 @@
 const User = require("../model/superAdmin");
+const AppError = require("../middleware/appError");
 
 const registerSuperAdmin = async (
   name,
@@ -12,7 +13,7 @@ const registerSuperAdmin = async (
   const superadminSecretCode = process.env.SUPERADMIN_SECRET_CODE;
 
   if (superadminSecretCode !== secretCode) {
-    throw new Error("Invalid secret code");
+    throw new AppError("149B", "secret code not matched", 400);
   }
 
   // Check if the user already exists
@@ -22,7 +23,7 @@ const registerSuperAdmin = async (
   });
 
   if (existingUser) {
-    throw new Error("User already exists");
+    throw new AppError("147B", "user already exist", 400);
   }
 
   // Create the new super admin

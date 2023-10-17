@@ -1,4 +1,3 @@
-const logger = require("../config/logger.config");
 const empService = require("../service/empService");
 const { generateRandomWallet } = require("../utils/etherGen");
 const { tryCatch } = require("../utils/tryCatch");
@@ -13,23 +12,13 @@ const createEmp = tryCatch(async (req, res, next) => {
   const { name, email, phone, companyId } = req.body;
 
   // Check if the logged-in user is a super admin
-  const isAdmin = await empService.isAdmin(userId);
+  await empService.isAdmin(userId);
 
-  if (!isAdmin) {
-    return res.status(403).send({ error: "Unauthorized to create employee" });
-  }
+  //check employee exist or not before add
+  await empService.isExist(email);
 
   // Check if the company belongs to the logged-in user
-  const doesCompanyBelongToUser = await empService.doesCompanyBelongToUser(
-    companyId,
-    loggeduser
-  );
-
-  if (!doesCompanyBelongToUser) {
-    return res
-      .status(403)
-      .send({ error: "Unauthorized to create employee for this company" });
-  }
+  await empService.doesCompanyBelongToUser(companyId, loggeduser);
 
   // Create the admin
   const emp = await empService.createEmp(
