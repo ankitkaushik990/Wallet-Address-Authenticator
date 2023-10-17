@@ -2,8 +2,7 @@ const  Admin = require("../model/admin");
 const superAdmin = require("../model/superAdmin");
 const Company= require("../model/company")
 const AppError = require("../middleware/appError");
-
-const logger = require("../config/logger.config");
+const Emp = require("../model/employee");
 
 const createAdmin = async (
   name,
@@ -23,6 +22,27 @@ const createAdmin = async (
   });
 
   return admin;
+};
+
+const isAdmin = async (userId) => {
+  const user = await Admin.findByPk(userId);
+
+  if (!user) {
+    throw new AppError("1294", "Admin not found", 400);
+  }
+
+  // Check if the user has the super admin role
+  const isAdmin = user.role === "admin";
+
+  if (!isAdmin) {
+    throw new AppError(
+      "1294",
+      "Unauthorized- only admin can view list of employees",
+      400
+    );
+  }
+
+  return isAdmin;
 };
 
 const isSuperAdmin = async (userId) => {
@@ -67,10 +87,21 @@ const doesCompanyBelongToUser = async (companyId, userId) => {
   return belongsToUser;
 };
 
+const allEmp = async (userId) => {
+  const all = await Emp.findAll({ where: { createdBy: userId } });
+
+  if (all.length === 0) {
+    throw new AppError("456", "No emplpyee found", 403);
+  }
+
+  return all;
+};
 
 module.exports = {
   createAdmin,
-    isSuperAdmin,
-  doesCompanyBelongToUser
+  isSuperAdmin,
+  doesCompanyBelongToUser,
+  isAdmin,
+  allEmp,
 };
 

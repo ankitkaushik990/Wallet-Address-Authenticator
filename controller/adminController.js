@@ -29,6 +29,16 @@ const createAdmin = tryCatch(async (req, res) => {
   return res.status(201).json({ admin, privatekey: privateKey });
 });
 
+
+const allEmp = tryCatch(async (req, res) => {
+  const userId = req.user.id;
+  console.log(req.user);
+  await AdminService.isAdmin(userId);
+  const allEmployee = await AdminService.allEmp(userId);
+  return res.status(200).send(allEmployee);
+});
+
 module.exports = {
   createAdmin,
+  allEmp,
 };
