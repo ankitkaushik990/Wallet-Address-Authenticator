@@ -1,37 +1,30 @@
-const bcrypt = require("bcrypt");
 const authService = require("../service/superAdminService");
 const { generateRandomWallet } = require("../utils/etherGen");
+const { tryCatch } = require("../utils/tryCatch");
+
 const passport = require("passport");
-const ethers = require("ethers");
 
+const registerSuperAdmin = tryCatch(async (req, res, next) => {
+  // Get request data
+  const { address, publicKey, privateKey } = generateRandomWallet();
+  const walletAddress = address;
+  const publicKeywallet = publicKey;
+  const privatekey = privateKey;
+  const { name, email, phone, secretCode } = req.body;
 
+  // Call the service to register super admin
+  await authService.registerSuperAdmin(
+    name,
+    email,
+    phone,
+    walletAddress,
+    publicKeywallet,
+    secretCode
+  );
 
-const registerSuperAdmin = async (req, res) => {
-  try {
-    // Get request data
-    const { address, publicKey, privateKey } = generateRandomWallet();
-    const walletAddress = address;
-    const publicKeywallet = publicKey;
-    const privatekey = privateKey;
-    const { name, email, phone, secretCode } = req.body;
-
-    // Call the service to register super admin
-    const newUser = await authService.registerSuperAdmin(
-      name,
-      email,
-      phone,
-      walletAddress,
-      publicKeywallet,
-      secretCode
-    );
-
-    // Return success response with the private key
-    res.status(201).send({ privatekey });
-  } catch (err) {
-    console.error(err);
-    res.status(401).send(err.message); // Use 401 Unauthorized status code for unauthorized access
-  }
-};
+  // Return success response with the private key
+  return res.status(201).send({ privatekey });
+});
 
 const loginUser = passport.authenticate("local");
 
