@@ -37,8 +37,21 @@ const logoutUser = (req, res) => {
   });
 };
 
+
+const allcompany = tryCatch(async (req, res, next) => {
+  const userId = req.user.id;
+
+
+  // Check if the logged-in user is a super admin
+  await authService.isSuperAdmin(userId);
+
+  const allC = await authService.allcompany(userId);
+  res.send(allC);
+});
+
 module.exports = {
   registerSuperAdmin,
   loginUser,
   logoutUser,
+  allcompany,
 };

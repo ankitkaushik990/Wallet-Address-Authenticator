@@ -1,6 +1,7 @@
 const User = require("../model/superAdmin");
 const AppError = require("../middleware/appError");
-
+const superAdmin = require("../model/superAdmin");
+const company = require("../model/company");
 const registerSuperAdmin = async (
   name,
   email,
@@ -39,6 +40,38 @@ const registerSuperAdmin = async (
   return newUser;
 };
 
+const isSuperAdmin = async (userId) => {
+  const user = await superAdmin.findByPk(userId);
+
+  if (!user) {
+    throw new AppError("1294", "superAdmin not found", 400);
+  }
+
+  // Check if the user has the super admin role
+  const isSuperAdmin = user.role === "superAdmin";
+
+  if (!isSuperAdmin) {
+    throw new AppError(
+      "1294",
+      "Unauthorized- only superadmin can view list of companies",
+      400
+    );
+  }
+
+  return isSuperAdmin;
+};
+
+const allcompany = async (userId) => {
+  const all = await company.findAll({ where: { createdBy: userId } });
+
+  if (all.length === 0) {
+    throw new AppError("456", "No company found", 403);
+  }
+
+  return all;
+};
 module.exports = {
   registerSuperAdmin,
+  allcompany,
+  isSuperAdmin,
 };

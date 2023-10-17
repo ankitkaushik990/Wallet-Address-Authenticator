@@ -5,6 +5,7 @@ const {
   registerSuperAdmin,
   loginUser,
   logoutUser,
+  allcompany,
 } = require("../controller/superAdminController");
 const { isAuthenticated } = require("../config/passport.config");
 
@@ -19,5 +20,7 @@ router.post("/login", loginUser, (req, res) => {
 router.post("/register", registerSuperAdmin);
 
 router.get("/logout", isAuthenticated, logoutUser);
+
+router.get("/allcompany", isAuthenticated,allcompany);
 
 module.exports = router;
