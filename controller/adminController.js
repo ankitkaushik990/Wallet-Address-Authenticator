@@ -1,9 +1,8 @@
-const logger = require("../config/logger.config");
 const AdminService = require("../service/adminService");
 const { generateRandomWallet } = require("../utils/etherGen");
 const { tryCatch } = require("../utils/tryCatch");
 
-const createAdmin = tryCatch(async (req, res, ) => {
+const createAdmin = tryCatch(async (req, res) => {
   const userId = req.user.id;
 
   const { address, privateKey } = generateRandomWallet();
@@ -12,23 +11,10 @@ const createAdmin = tryCatch(async (req, res, ) => {
   const { name, email, phone, companyId } = req.body;
 
   // Check if the logged-in user is a super admin
-  const isSuperAdmin = await AdminService.isSuperAdmin(userId);
-
-  if (!isSuperAdmin) {
-    return res.status(403).send({ error: "Unauthorized to create admin" });
-  }
+  await AdminService.isSuperAdmin(userId);
 
   // Check if the company belongs to the logged-in user
-  const doesCompanyBelongToUser = await AdminService.doesCompanyBelongToUser(
-    companyId,
-    userId
-  );
-
-  if (!doesCompanyBelongToUser) {
-    return res
-      .status(403)
-      .send({ error: "Unauthorized to create admin for this company" });
-  }
+  await AdminService.doesCompanyBelongToUser(companyId, userId);
 
   // Create the admin
   const admin = await AdminService.createAdmin(
