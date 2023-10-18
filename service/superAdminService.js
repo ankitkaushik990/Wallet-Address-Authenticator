@@ -40,9 +40,14 @@ const registerSuperAdmin = async (
   return newUser;
 };
 
-const isSuperAdmin = async (loggeduser) => {
-  const user = loggeduser;
+const isSuperAdmin = async (userId) => {
+  const user = await superAdmin.findByPk(userId);
 
+  if (!user) {
+    throw new AppError("1294", "superAdmin not found", 400);
+  }
+
+  // Check if the user has the super admin role
   const isSuperAdmin = user.role === "superAdmin";
 
   if (!isSuperAdmin) {
@@ -56,8 +61,7 @@ const isSuperAdmin = async (loggeduser) => {
   return isSuperAdmin;
 };
 
-const allcompany = async (loggeduser) => {
-  const userId = loggeduser.id;
+const allcompany = async (userId) => {
   const all = await company.findAll({ where: { createdBy: userId } });
 
   if (all.length === 0) {

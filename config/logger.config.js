@@ -5,7 +5,7 @@ const logger = createLogger({
     new transports.Console({
       level: "info",
       format: format.combine(
-        format.colorize({ all: true, colors: { info: "cyan" } }),
+        format.colorize({ all: true, colors: { info: "white" } }),
         format.colorize(), // Apply colorize format to add colors to log messages
         format.simple()
       ),

@@ -12,7 +12,7 @@ const createEmp = tryCatch(async (req, res, next) => {
   const { name, email, phone, companyId } = req.body;
 
   // Check if the logged-in user is a super admin
-  await empService.isAdmin(loggeduser);
+  await empService.isAdmin(userId);
 
   //check employee exist or not before add
   await empService.isExist(email);
@@ -34,11 +34,10 @@ const createEmp = tryCatch(async (req, res, next) => {
 });
 
 const updateEmp = tryCatch(async (req, res, next) => {
-  const role = req.user.role;
-  const email = req.user.email;
+  const userId = req.user.id;
   const { name, phone } = req.body;
 
-  await empService.updateEmp(name, phone, email, role);
+  await empService.updateEmp(userId, name, phone);
   return res.status(201).send({ message: "information updated successfully" });
 });
 

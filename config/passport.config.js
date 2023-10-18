@@ -38,34 +38,32 @@ exports.initializingPassport = (passport) => {
     )
   );
 
- passport.serializeUser((user, done) => {
-   // Serialize user based on their email
-   done(null, user.email);
- });
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
 
- passport.deserializeUser(async (email, done) => {
-   try {
-     const admin = await Admin.findOne({ where: { email } });
-     const superAdminUser = await superAdmin.findOne({ where: { email } });
-     const employee = await Employee.findOne({ where: { email } });
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const admin = await Admin.findByPk(id);
+      const superAdminUser = await superAdmin.findByPk(id);
+      const employee = await Employee.findByPk(id);
 
-     if (admin) {
-       admin.role = "admin";
-       return done(null, admin);
-     } else if (superAdminUser) {
-       superAdminUser.role = "superAdmin";
-       return done(null, superAdminUser);
-     } else if (employee) {
-       employee.role = "employee";
-       return done(null, employee);
-     } else {
-       return done(null, null);
-     }
-   } catch (error) {
-     done(error);
-   }
- });
-
+      if (admin) {
+        admin.role = "admin";
+        return done(null, admin);
+      } else if (superAdminUser) {
+        superAdminUser.role = "superAdmin";
+        return done(null, superAdminUser);
+      } else if (employee) {
+        employee.role = "employee";
+        return done(null, employee);
+      } else {
+        return done(null, null);
+      }
+    } catch (error) {
+      done(error);
+    }
+  });
 };
 
 exports.isAuthenticated = (req, res, next) => {
