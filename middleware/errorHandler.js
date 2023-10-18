@@ -1,6 +1,14 @@
 const AppError = require("./appError");
-
+const logger = require("../config/logger.config");
 const errorHandler = (error, req, res, next) => {
+  logger.error(error.message);
+
+  if (error === "Validation error") {
+    return res
+      .status(400)
+      .json({ errorCode: "456", message: "user-email already exist" });
+  }
+
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({
       errorCode: error.errorCode,

@@ -24,8 +24,9 @@ const createAdmin = async (
   return admin;
 };
 
-const isAdmin = async (userId) => {
-  const user = await Admin.findByPk(userId);
+const isAdmin = async (loggeduser) => {
+  const email = loggeduser.email;
+  const user = await superAdmin.findOne({ where: { email: email } });
 
   if (!user) {
     throw new AppError("1294", "Admin not found", 400);
@@ -45,15 +46,16 @@ const isAdmin = async (userId) => {
   return isAdmin;
 };
 
-const isSuperAdmin = async (userId) => {
-  const user = await superAdmin.findByPk(userId);
+const isSuperAdmin = async (loggeduser) => {
+  const email = loggeduser.email;
+  const user = await superAdmin.findOne({ where: { email: email } });
 
   if (!user) {
     throw new AppError("1294", "superAdmin not found", 400);
   }
 
   // Check if the user has the super admin role
-  const isSuperAdmin = user.role === "superAdmin";
+  const isSuperAdmin = loggeduser.role === "superAdmin";
 
   if (!isSuperAdmin) {
     throw new AppError(
@@ -87,8 +89,9 @@ const doesCompanyBelongToUser = async (companyId, userId) => {
   return belongsToUser;
 };
 
-const allEmp = async (userId) => {
-  const all = await Emp.findAll({ where: { createdBy: userId } });
+const allEmp = async (loggeduser) => {
+  const id = loggeduser.id;
+  const all = await Emp.findAll({ where: { createdBy: id } });
 
   if (all.length === 0) {
     throw new AppError("456", "No emplpyee found", 403);

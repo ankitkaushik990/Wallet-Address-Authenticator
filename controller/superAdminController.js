@@ -39,13 +39,12 @@ const logoutUser = (req, res) => {
 
 
 const allcompany = tryCatch(async (req, res, next) => {
-  const userId = req.user.id;
-
+  const user = req.user;
 
   // Check if the logged-in user is a super admin
-  await authService.isSuperAdmin(userId);
+  await authService.isSuperAdmin(user);
 
-  const allC = await authService.allcompany(userId);
+  const allC = await authService.allcompany(user);
   res.send(allC);
 });
 

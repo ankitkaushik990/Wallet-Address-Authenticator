@@ -30,12 +30,15 @@ const isExist = async (email) => {
   }
 };
 
-const isAdmin = async (userId) => {
-  const user = await Admin.findByPk(userId);
+const isAdmin = async (loggeduser) => {
+  const email = loggeduser.email;
+  const user = await Admin.findOne({ where: { email: email } });
+
+  // const user = await Admin.findByPk(userId);
   if (!user) {
-    throw new AppError("120", "Admin not found", 400);
+    throw new AppError("120", "OOPS! only admin can add employee", 400);
   }
-  const isAdmin = user.role === "admin";
+  const isAdmin = loggeduser.role === "admin";
 
   if (!isAdmin) {
     throw new AppError("199", "Unauthorized - not Admin", 400);
@@ -60,8 +63,9 @@ const doesCompanyBelongToUser = async (companyId, loggeduser) => {
   return belongsTocomp;
 };
 
-const updateEmp = async (userId, name, phone) => {
-  const emp = await Emp.findByPk(userId);
+const updateEmp = async (loggeduser, name, phone) => {
+  const email = loggeduser.email;
+  const emp = await Emp.findOne({ where: { email: email } });
 
   if (!emp) {
     throw new AppError("661", "employee not found to update details", 400);
