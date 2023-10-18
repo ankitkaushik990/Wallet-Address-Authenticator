@@ -24,12 +24,13 @@ const createAdmin = async (
   return admin;
 };
 
-const isAdmin = async (userId) => {
-  const user = await Admin.findByPk(userId);
+const isAdmin = async (loggeduser) => {
+  const user = loggeduser;
+  // const user = await Admin.findByPk(userId);
 
-  if (!user) {
-    throw new AppError("1294", "Admin not found", 400);
-  }
+  // if (!user) {
+  //   throw new AppError("1294", "Admin not found", 400);
+  // }
 
   // Check if the user has the super admin role
   const isAdmin = user.role === "admin";
@@ -87,7 +88,8 @@ const doesCompanyBelongToUser = async (companyId, userId) => {
   return belongsToUser;
 };
 
-const allEmp = async (userId) => {
+const allEmp = async (loggeduser) => {
+  const userId = loggeduser.id;
   const all = await Emp.findAll({ where: { createdBy: userId } });
 
   if (all.length === 0) {

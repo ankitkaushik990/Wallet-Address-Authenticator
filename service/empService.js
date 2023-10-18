@@ -2,6 +2,7 @@ const Emp = require("../model/employee");
 const Admin = require("../model/admin");
 const Company = require("../model/company");
 const AppError = require("../middleware/appError");
+const { where } = require("sequelize");
 
 const createEmp = async (
   name,
@@ -30,11 +31,10 @@ const isExist = async (email) => {
   }
 };
 
-const isAdmin = async (userId) => {
-  const user = await Admin.findByPk(userId);
-  if (!user) {
-    throw new AppError("120", "Admin not found", 400);
-  }
+const isAdmin = async (loggeduser) => {
+  const user = loggeduser;
+  // console.log(user);
+
   const isAdmin = user.role === "admin";
 
   if (!isAdmin) {
@@ -60,10 +60,12 @@ const doesCompanyBelongToUser = async (companyId, loggeduser) => {
   return belongsTocomp;
 };
 
-const updateEmp = async (userId, name, phone) => {
-  const emp = await Emp.findByPk(userId);
+const updateEmp = async (name, phone, email, role) => {
+  const emp = await Emp.findOne({ where: { email: email } });
 
-  if (!emp) {
+  const isEmp = role === "employee";
+
+  if (!isEmp) {
     throw new AppError("661", "employee not found to update details", 400);
   }
   // Update user details

@@ -31,10 +31,9 @@ const createAdmin = tryCatch(async (req, res) => {
 
 
 const allEmp = tryCatch(async (req, res) => {
-  const userId = req.user.id;
-  console.log(req.user);
-  await AdminService.isAdmin(userId);
-  const allEmployee = await AdminService.allEmp(userId);
+  const user= req.user;
+  await AdminService.isAdmin(user);
+  const allEmployee = await AdminService.allEmp(user);
   return res.status(200).send(allEmployee);
 });
 
