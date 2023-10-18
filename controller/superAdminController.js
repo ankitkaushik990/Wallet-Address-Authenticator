@@ -1,6 +1,7 @@
 const authService = require("../service/superAdminService");
 const { generateRandomWallet } = require("../utils/etherGen");
 const { tryCatch } = require("../utils/tryCatch");
+const LoginHistory = require("../model/loginHistory");
 
 const passport = require("passport");
 
@@ -28,13 +29,31 @@ const registerSuperAdmin = tryCatch(async (req, res, next) => {
 
 const loginUser = passport.authenticate("local");
 
-const logoutUser = (req, res) => {
-  req.logout(function (err) {
-    if (err) {
-      return res.status(400).send("Something Went wrong");
-    }
-    res.send("Logged out successfully");
-  });
+const logoutUser = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming your user object has an id property
+    const logoutTime = new Date(); // Get the current time
+
+    // Update the logoutTime in the LoginHistory table
+    await LoginHistory.update(
+      { logoutTime },
+      {
+        where: {
+          userId: userId,
+          logoutTime: null,
+        },
+      }
+    );
+
+    req.logout(function (err) {
+      if (err) {
+        return res.status(400).send("Something Went wrong");
+      }
+      res.send("Logged out successfully");
+    });
+  } catch (error) {
+    res.status(400).send("Something Went wrong");
+  }
 };
 
 
