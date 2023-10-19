@@ -56,7 +56,7 @@ const isSuperAdmin = async (loggeduser) => {
   const user = await superAdmin.findOne({ where: { email: email } });
 
   if (!user) {
-    throw new AppError("1294", "superAdmin not found", 400);
+    throw new AppError("1294", "Authorized only for Super-Admins", 400);
   }
 
   // Check if the user has the super admin role

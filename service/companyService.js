@@ -6,9 +6,12 @@ const createCompany = async (name, description, loggedUser) => {
   const email = loggedUser.email;
   const user = await User.findOne({ where: { email: email } });
   // Find the user by ID from the database
-  // const user = await User.findByPk(createdBy);
   if (!user) {
-    throw new AppError("890", "Unauthorized - SuperAdmin not found ", 400);
+    throw new AppError(
+      "890",
+      "Unauthorized - only Super-Admins are allowed to create company",
+      400
+    );
   }
   // Check if the user exists and their role is superAdmin
   if (loggedUser.role !== "superAdmin") {
