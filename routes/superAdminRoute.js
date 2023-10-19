@@ -9,15 +9,16 @@ const {
   allcompany,
 } = require("../controller/superAdminController");
 const { isAuthenticated } = require("../config/passport.config");
+const { checkPreviousLogin } = require("../middleware/checklogin");
 
-router.post("/login", loginUser, async (req, res) => {
+router.post("/login", loginUser, checkPreviousLogin, async (req, res) => {
   try {
     const userId = req.user.id;
-    const email = req.email;
+    const email = req.user.email;
     const ipAddress = req.ip;
 
     // Save the userId and ipAddress to the LoginHistory table
-    await LoginHistory.create({ userId, ipAddress });
+    await LoginHistory.create({ ipAddress, userId, email });
     res.send({ message: `user logged in successfully` });
   } catch (err) {
     res.status(400).send({ message: "something went wrong", err: err.message });

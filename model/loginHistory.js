@@ -6,8 +6,13 @@ const LoginHistory = sequelize.define("login_history", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+
   userId: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
   loginTime: {

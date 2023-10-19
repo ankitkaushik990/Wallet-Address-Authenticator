@@ -31,7 +31,8 @@ const loginUser = passport.authenticate("local");
 
 const logoutUser = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming your user object has an id property
+    const userId = req.user.id;
+    const email = req.user.email; // Assuming your user object has an id property
     const logoutTime = new Date(); // Get the current time
 
     // Update the logoutTime in the LoginHistory table
@@ -41,6 +42,7 @@ const logoutUser = async (req, res) => {
         where: {
           userId: userId,
           logoutTime: null,
+          email: email,
         },
       }
     );
