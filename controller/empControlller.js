@@ -11,6 +11,11 @@ const createEmp = tryCatch(async (req, res, next) => {
 
   const { name, email, phone, companyId } = req.body;
 
+  //check if email is already exist
+
+  // check if the email already exist
+  await empService.emailMatch(email);
+
   // Check if the logged-in user is a super admin
   await empService.isAdmin(user);
 

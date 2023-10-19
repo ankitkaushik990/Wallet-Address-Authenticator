@@ -11,6 +11,9 @@ const createAdmin = tryCatch(async (req, res) => {
 
   const { name, email, phone, companyId } = req.body;
 
+  // check if the email already exist
+  await AdminService.emailMatch(email);
+
   // Check if the logged-in user is a super admin
   await AdminService.isSuperAdmin(user);
 

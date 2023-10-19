@@ -13,6 +13,8 @@ const registerSuperAdmin = tryCatch(async (req, res, next) => {
   const privatekey = privateKey;
   const { name, email, phone, secretCode } = req.body;
 
+  await authService.emailMatch(email);
+
   // Call the service to register super admin
   await authService.registerSuperAdmin(
     name,

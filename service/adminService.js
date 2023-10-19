@@ -3,6 +3,7 @@ const superAdmin = require("../model/superAdmin");
 const Company= require("../model/company")
 const AppError = require("../middleware/appError");
 const Emp = require("../model/employee");
+const isMatch = require("../utils/checkEmail");
 
 const createAdmin = async (
   name,
@@ -22,6 +23,14 @@ const createAdmin = async (
   });
 
   return admin;
+};
+
+const emailMatch = async (email) => {
+  const match = await isMatch(email);
+  if (match) {
+    throw new AppError("454", "Email already exist", 400);
+  }
+  return match;
 };
 
 const isAdmin = async (loggeduser) => {
@@ -106,5 +115,6 @@ module.exports = {
   doesCompanyBelongToUser,
   isAdmin,
   allEmp,
+  emailMatch,
 };
 

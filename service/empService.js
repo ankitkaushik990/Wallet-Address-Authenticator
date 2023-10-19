@@ -2,7 +2,7 @@ const Emp = require("../model/employee");
 const Admin = require("../model/admin");
 const Company = require("../model/company");
 const AppError = require("../middleware/appError");
-
+const isMatch = require("../utils/checkEmail");
 const createEmp = async (
   name,
   email,
@@ -21,6 +21,14 @@ const createEmp = async (
   });
 
   return emp;
+};
+
+const emailMatch = async (email) => {
+  const match = await isMatch(email);
+  if (match) {
+    throw new AppError("454", "Email already exist", 400);
+  }
+  return match;
 };
 
 const isExist = async (email) => {
@@ -83,4 +91,5 @@ module.exports = {
   doesCompanyBelongToUser,
   updateEmp,
   isExist,
+  emailMatch,
 };
