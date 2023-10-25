@@ -24,7 +24,9 @@ if (config.use_env_variable) {
 sequelize
   .authenticate()
   .then(() => {
-    logger.info("Database connection has been established successfully.");
+    logger.info(
+      `Database connection has been established with ${process.env.DBNAME} successfully.`
+    );
   })
   .catch((err) => {
     logger.info("Unable to connect to the database:", err);
@@ -44,7 +46,7 @@ fs.readdirSync(__dirname)
       sequelize,
       Sequelize.DataTypes
     );
-    const modelName = model.name.charAt(0).toUpperCase() + model.name.slice(1); // Capitalize the model name
+    const modelName = model.name.charAt(0).toUpperCase() + model.name.slice(1);
     db[modelName] = model;
   });
 

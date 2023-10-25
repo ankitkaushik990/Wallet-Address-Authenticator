@@ -4,6 +4,8 @@ module.exports = (sequelize) => {
   class Admin extends Model {
     static associate(models) {
       // define association here
+      Admin.belongsTo(models.Company, { foreignKey: "companyId" });
+        Admin.belongsTo(models.SuperAdmin, { foreignKey: "createdBy" });
     }
   }
 

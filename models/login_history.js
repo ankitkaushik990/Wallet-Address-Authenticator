@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+       Login_history.belongsTo(models.SuperAdmin, { foreignKey: "userId" });
+       Login_history.belongsTo(models.Admin, { foreignKey: "userId" });
+       Login_history.belongsTo(models.Employee, { foreignKey: "userId" });
     }
   }
 

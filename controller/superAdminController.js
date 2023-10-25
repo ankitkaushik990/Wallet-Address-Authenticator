@@ -27,7 +27,7 @@ const registerSuperAdmin = tryCatch(async (req, res) => {
     secretCode,
   });
 
-  if (error==="Validation error") {
+  if (error) {
     return res.status(400).send({ error: error.details[0].message });
   }
 
