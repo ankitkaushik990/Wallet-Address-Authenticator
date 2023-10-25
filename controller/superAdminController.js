@@ -2,7 +2,6 @@ const authService = require("../service/superAdminService");
 const { generateRandomWallet } = require("../utils/etherGen");
 const { SuperAdminValidator } = require("../middleware/validator");
 const { tryCatch } = require("../utils/tryCatch");
-const AppError = require("../middleware/appError");
 
 const db = require("../models");
 const LoginHistory = db.Login_history;
@@ -11,14 +10,11 @@ const LoginHistory = db.Login_history;
 const passport = require("passport");
 
 const registerSuperAdmin = tryCatch(async (req, res) => {
-  // Get request data
   const { address, publicKey, privateKey } = generateRandomWallet();
   const walletAddress = address;
   const publicKeywallet = publicKey;
   const privatekey = privateKey;
   const { name, email, phone, secretCode } = req.body;
-
-
 
   const { error } = SuperAdminValidator({
     name,
@@ -30,7 +26,6 @@ const registerSuperAdmin = tryCatch(async (req, res) => {
   if (error) {
     return res.status(400).send({ error: error.details[0].message });
   }
-
 
   await authService.emailMatch(email);
 
@@ -44,7 +39,7 @@ const registerSuperAdmin = tryCatch(async (req, res) => {
     secretCode
   );
 
-  // Return success response with the private key
+  
   return res.status(201).send({ privatekey });
 });
 
@@ -53,10 +48,9 @@ const loginUser = passport.authenticate("local");
 const logoutUser = async (req, res) => {
   try {
     const userId = req.user.id;
-    const email = req.user.email; // Assuming your user object has an id property
-    const logoutTime = new Date(); // Get the current time
-
-    // Update the logoutTime in the LoginHistory table
+    const email = req.user.email; 
+    const logoutTime = new Date(); 
+    
     await LoginHistory.update(
       { logoutTime },
       {
@@ -83,7 +77,7 @@ const logoutUser = async (req, res) => {
 const allcompany = tryCatch(async (req, res, next) => {
   const user = req.user;
 
-  // Check if the logged-in user is a super admin
+  
   await authService.isSuperAdmin(user);
 
   const allC = await authService.allcompany(user);
