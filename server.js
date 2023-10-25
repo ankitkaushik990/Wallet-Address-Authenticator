@@ -10,7 +10,7 @@ const logger = require("./config/logger.config");
 
 const errorHandler = require("./middleware/errorHandler");
 
-const db = require("./config/dbconfig");
+const db = require("./models/index")
 const routing = require("./routes/index.route");
 const { initializingPassport } = require("./config/passport.config");
 
@@ -36,7 +36,7 @@ initializingPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-db.sync();
+// db.sync();
 
 app.use("/", routing);
 app.use(errorHandler);

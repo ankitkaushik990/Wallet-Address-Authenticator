@@ -1,7 +1,8 @@
+const db = require("../models");
+const SuperAdmin = db.SuperAdmin;
+const employee = db.Employee;
+const Admin = db.Admin;
 
-const Admin = require("../model/admin");
-const Employee = require("../model/employee");
-const SuperAdmin = require("../model/superAdmin")
 
 async function checkEmailExistence(email) {
   const isSuperAdmin = await SuperAdmin.findOne({
@@ -9,14 +10,13 @@ async function checkEmailExistence(email) {
       email: email,
     },
   });
-
-  const isExistingAdmin = await Admin.findOne({
+   const isExistingAdmin = await Admin.findOne({
     where: {
       email: email,
     },
   });
 
-  const isExistingEmployee = await Employee.findOne({
+  const isExistingEmployee = await employee.findOne({
     where: {
       email: email,
     },

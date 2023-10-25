@@ -1,8 +1,10 @@
 const localStrategy = require("passport-local").Strategy;
 const ethers = require("ethers");
-const Admin = require("../model/admin");
-const superAdmin = require("../model/superAdmin");
-const Employee = require("../model/employee");
+const db = require("../models");
+const Admin = db.Admin;
+const SuperAdmin = db.SuperAdmin;
+const Employee = db.Employee;
+
 
 exports.initializingPassport = (passport) => {
   passport.use(
@@ -14,7 +16,7 @@ exports.initializingPassport = (passport) => {
       async (email, privatekey, done) => {
         try {
           let user =
-            (await superAdmin.findOne({ where: { email } })) ||
+            (await SuperAdmin.findOne({ where: { email } })) ||
             (await Admin.findOne({ where: { email } })) ||
             (await Employee.findOne({ where: { email } }));
 
@@ -32,6 +34,7 @@ exports.initializingPassport = (passport) => {
             return done(null, false, { message: "Invalid private key" });
           }
         } catch (error) {
+          console.log(error.message)
           return done(error);
         }
       }
@@ -44,7 +47,7 @@ exports.initializingPassport = (passport) => {
   passport.deserializeUser(async (email, done) => {
     try {
       const admin = await Admin.findOne({ where: { email } });
-      const superAdminUser = await superAdmin.findOne({ where: { email } });
+      const superAdminUser = await SuperAdmin.findOne({ where: { email } });
       const employee = await Employee.findOne({ where: { email } });
 
       if (admin) {
@@ -60,6 +63,7 @@ exports.initializingPassport = (passport) => {
         return done(null, null);
       }
     } catch (error) {
+       console.log(error.message);
       done(error);
     }
   });

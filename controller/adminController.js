@@ -1,6 +1,7 @@
 const AdminService = require("../service/adminService");
 const { generateRandomWallet } = require("../utils/etherGen");
 const { tryCatch } = require("../utils/tryCatch");
+const { AdminEMValidator } = require("../middleware/validator");
 
 const createAdmin = tryCatch(async (req, res) => {
   const userId = req.user.id;
@@ -10,6 +11,11 @@ const createAdmin = tryCatch(async (req, res) => {
   const walletAddress = address;
 
   const { name, email, phone, companyId } = req.body;
+  const { error } = AdminEMValidator({ name, email, phone, companyId });
+
+  if (error) {
+    return res.status(400).send({ error: error.details[0].message });
+  }
 
   // check if the email already exist
   await AdminService.emailMatch(email);

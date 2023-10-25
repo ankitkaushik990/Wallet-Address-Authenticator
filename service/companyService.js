@@ -1,5 +1,7 @@
-const Company = require("../model/company");
-const User = require("../model/superAdmin"); // Assuming you have a User model
+const db = require("../models");
+const Company = db.Company;
+const User = db.SuperAdmin;
+
 const AppError = require("../middleware/appError");
 
 const createCompany = async (name, description, loggedUser) => {

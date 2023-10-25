@@ -1,17 +1,36 @@
 const authService = require("../service/superAdminService");
 const { generateRandomWallet } = require("../utils/etherGen");
+const { SuperAdminValidator } = require("../middleware/validator");
 const { tryCatch } = require("../utils/tryCatch");
-const LoginHistory = require("../model/loginHistory");
+const AppError = require("../middleware/appError");
+
+const db = require("../models");
+const LoginHistory = db.Login_history;
+
 
 const passport = require("passport");
 
-const registerSuperAdmin = tryCatch(async (req, res, next) => {
+const registerSuperAdmin = tryCatch(async (req, res) => {
   // Get request data
   const { address, publicKey, privateKey } = generateRandomWallet();
   const walletAddress = address;
   const publicKeywallet = publicKey;
   const privatekey = privateKey;
   const { name, email, phone, secretCode } = req.body;
+
+
+
+  const { error } = SuperAdminValidator({
+    name,
+    email,
+    phone,
+    secretCode,
+  });
+
+  if (error==="Validation error") {
+    return res.status(400).send({ error: error.details[0].message });
+  }
+
 
   await authService.emailMatch(email);
 

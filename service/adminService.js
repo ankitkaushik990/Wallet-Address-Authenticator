@@ -1,8 +1,17 @@
-const  Admin = require("../model/admin");
-const superAdmin = require("../model/superAdmin");
-const Company= require("../model/company")
+const db = require("../models");
+
+const Admin = db.Admin;
+const superAdmin = db.SuperAdmin;
+const Company = db.Company;
+const Emp = db.Employee;
+
+
+
+// const Admin = require("../model/admin");
+// const superAdmin = require("../model/superAdmin");
+// const Company= require("../model/company")
 const AppError = require("../middleware/appError");
-const Emp = require("../model/employee");
+// const Emp = require("../model/employee");
 const isMatch = require("../utils/checkEmail");
 
 const createAdmin = async (
@@ -35,7 +44,9 @@ const emailMatch = async (email) => {
 
 const isAdmin = async (loggeduser) => {
   const email = loggeduser.email;
-  const user = await superAdmin.findOne({ where: { email: email } });
+
+  const user = await Admin.findOne({ where: { email: email } });
+
 
   if (!user) {
     throw new AppError("1294", " only admin can view list of employees", 400);

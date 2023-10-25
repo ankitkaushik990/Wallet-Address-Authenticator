@@ -1,6 +1,9 @@
-const Emp = require("../model/employee");
-const Admin = require("../model/admin");
-const Company = require("../model/company");
+const db = require("../models");
+
+const Emp = db.Employee;
+const Admin = db.Admin;
+const Company = db.Company;
+
 const AppError = require("../middleware/appError");
 const isMatch = require("../utils/checkEmail");
 const createEmp = async (

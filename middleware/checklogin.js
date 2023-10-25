@@ -1,4 +1,8 @@
-const LoginHistory = require("../model/loginHistory");
+// const LoginHistory = require("../model/loginHistory");
+const db = require("../models");
+
+const LoginHistory = db.Login_history;
+
 
 const checkPreviousLogin = async (req, res, next) => {
   try {

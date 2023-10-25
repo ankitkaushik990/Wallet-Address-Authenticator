@@ -1,7 +1,8 @@
-const User = require("../model/superAdmin");
 const AppError = require("../middleware/appError");
-const superAdmin = require("../model/superAdmin");
-const company = require("../model/company");
+
+const db = require("../models");
+const company = db.Company;
+const User = db.SuperAdmin;
 const isMatch = require("../utils/checkEmail");
 const registerSuperAdmin = async (
   name,
@@ -53,7 +54,7 @@ const emailMatch = async (email) => {
 
 const isSuperAdmin = async (loggeduser) => {
   const email = loggeduser.email;
-  const user = await superAdmin.findOne({ where: { email: email } });
+  const user = await User.findOne({ where: { email: email } });
 
   if (!user) {
     throw new AppError("1294", "Authorized only for Super-Admins", 400);

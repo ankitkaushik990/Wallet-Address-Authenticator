@@ -1,5 +1,8 @@
 const express = require("express");
-const LoginHistory = require("../model/loginHistory");
+
+
+const db = require("../models");
+const LoginHistory = db.Login_history;
 
 const router = express.Router();
 const {
