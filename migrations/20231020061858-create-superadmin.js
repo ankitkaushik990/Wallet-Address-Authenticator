@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.TEXT, // Assuming a longer description, use TEXT data type
         allowNull: true, // Allow null if description is optional
       },
+      logo: {
+         type: Sequelize.STRING, // Assuming a longer description, use TEXT data type
+        allowNull: false, 
+      },
       createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,

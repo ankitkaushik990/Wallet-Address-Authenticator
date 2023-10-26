@@ -36,7 +36,6 @@ initializingPassport(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// db.sync();
 
 app.use("/", routing);
 app.use(errorHandler);

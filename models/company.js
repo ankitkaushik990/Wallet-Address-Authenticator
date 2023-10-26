@@ -20,8 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       description: {
-        type: DataTypes.TEXT, // Assuming a longer description, use TEXT data type
-        allowNull: true, // Allow null if description is optional
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      logo: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       createdBy: {
         type: DataTypes.INTEGER,

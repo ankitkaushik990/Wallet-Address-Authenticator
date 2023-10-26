@@ -4,7 +4,7 @@ const User = db.SuperAdmin;
 
 const AppError = require("../middleware/appError");
 
-const createCompany = async (name, description, loggedUser) => {
+const createCompany = async (name, description, logo, loggedUser) => {
   const email = loggedUser.email;
   const user = await User.findOne({ where: { email: email } });
   // Find the user by ID from the database
@@ -15,7 +15,6 @@ const createCompany = async (name, description, loggedUser) => {
       400
     );
   }
-  // Check if the user exists and their role is superAdmin
   if (loggedUser.role !== "superAdmin") {
     throw new AppError(
       "890",
@@ -30,6 +29,7 @@ const createCompany = async (name, description, loggedUser) => {
     name,
     description,
     createdBy,
+    logo,
   });
 
   return newCompany;
