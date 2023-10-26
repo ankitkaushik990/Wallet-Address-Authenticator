@@ -17,7 +17,6 @@ const { initializingPassport } = require("./config/passport.config");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Serve Swagger UI using swagger.json
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use(bodyParser.json());

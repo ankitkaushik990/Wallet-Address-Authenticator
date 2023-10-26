@@ -7,7 +7,7 @@ const AppError = require("../middleware/appError");
 const createCompany = async (name, description, logo, loggedUser) => {
   const email = loggedUser.email;
   const user = await User.findOne({ where: { email: email } });
-  // Find the user by ID from the database
+
   if (!user) {
     throw new AppError(
       "890",
@@ -24,7 +24,6 @@ const createCompany = async (name, description, logo, loggedUser) => {
   }
   const createdBy = loggedUser.id;
 
-  // Create the company if the user is a superAdmin
   const newCompany = await Company.create({
     name,
     description,

@@ -3,7 +3,6 @@ const { Model, DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   class Admin extends Model {
     static associate(models) {
-      // define association here
       Admin.belongsTo(models.Company, { foreignKey: "companyId" });
         Admin.belongsTo(models.SuperAdmin, { foreignKey: "createdBy" });
     }
@@ -48,7 +47,7 @@ module.exports = (sequelize) => {
       role: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "admin", // Default role for admins
+        defaultValue: "admin", 
       },
     },
     {

@@ -59,7 +59,7 @@ const isSuperAdmin = async (loggeduser) => {
     throw new AppError("1294", "Authorized only for Super-Admins", 400);
   }
 
-  // Check if the user has the super admin role
+
   const isSuperAdmin = loggeduser.role === "superAdmin";
 
   if (!isSuperAdmin) {

@@ -45,7 +45,7 @@ const isAdmin = async (loggeduser) => {
   const email = loggeduser.email;
   const user = await Admin.findOne({ where: { email: email } });
 
-  // const user = await Admin.findByPk(userId);
+
   if (!user) {
     throw new AppError("120", "OOPS! only admin can add employee", 400);
   }
@@ -81,7 +81,7 @@ const updateEmp = async (loggeduser, name, phone) => {
   if (!emp) {
     throw new AppError("661", "employee not found to update details", 400);
   }
-  // Update user details
+
   emp.name = name;
   emp.phone = phone;
   await emp.save();

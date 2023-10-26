@@ -3,7 +3,7 @@ const { Model, DataTypes, Sequelize } = require("sequelize");
 module.exports = (sequelize) => {
   class SuperAdmin extends Model {
     static associate(models) {
-      // define association here
+
     }
   }
 
