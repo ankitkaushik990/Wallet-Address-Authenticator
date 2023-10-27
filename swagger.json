@@ -25,11 +25,11 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "email@gmail.com"
+                    "example": "email@example.com"
                   },
                   "privatekey": {
                     "type": "string",
-                    "example": "0x837379f18b1b603eb1f88a281c19e1dfnjv51459a1f3696ad20df89c32fde99a86"
+                    "example": "0xce2b40adbdb550fbc056cc48fa05317b914a72e423ca30d9b178d52450ed8176"
                   }
                 },
                 "required": ["email", "privatekey"]
@@ -39,16 +39,54 @@
         },
         "responses": {
           "200": {
-            "description": "User logged in successfully."
+            "description": "User logged in successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "user logged in successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid credentials."
+                }
+              }
+            }
           },
           "401": {
-            "description": "Invalid credentials."
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Invalid credentials."
+                }
+              }
+            }
           },
           "403": {
-            "description": "User already logged in from this IP address and email."
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "User already logged in from this IP address and email."
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error."
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Internal Server Error."
+                }
+              }
+            }
           }
         }
       }
@@ -110,12 +148,35 @@
       "get": {
         "summary": "Logout User",
         "description": "Endpoint for user to log out.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "User logged out successfully."
+            "description": "User logged out successfully.",
+            "content": {
+              "text/plain": {
+                "example": "Logged out successfully"
+              }
+            }
           },
           "400": {
-            "description": "Something went wrong."
+            "description": "Bad request.",
+            "content": {
+              "text/plain": {
+                "example": "Something went wrong"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "text/plain": {
+                "example": "Unauthorized"
+              }
+            }
           }
         }
       }
@@ -128,7 +189,7 @@
           "description": "Company details.",
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -139,71 +200,29 @@
                   "description": {
                     "type": "string",
                     "example": "Company Description"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Image file (jpg, png, etc.)"
                   }
                 },
-                "required": ["name", "description"]
+                "required": ["name", "description", "image"]
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Company created successfully."
-          },
-          "400": {
-            "description": "Bad request."
-          }
-        }
-      }
-    },
-    "/admin/add": {
-      "post": {
-        "summary": "Add Admin",
-        "description": "Endpoint for creating a new admin.",
-        "requestBody": {
-          "description": "Admin details.",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "Admin Name"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "admin@example.com"
-                  },
-                  "phone": {
-                    "type": "string",
-                    "example": "1234567890"
-                  },
-                  "companyId": {
-                    "type": "integer",
-                    "example": 1
-                  }
-                },
-                "required": ["name", "email", "phone", "companyId"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Admin created successfully.",
+            "description": "Company created successfully.",
             "content": {
               "application/json": {
                 "example": {
-                  "admin": {
-                    "id": 1,
-                    "name": "Admin Name",
-                    "email": "admin@example.com",
-                    "phone": "1234567890",
-                    "companyId": 1
-                  },
-                  "privatekey": "0x837379f18b1b603eb1f88a281c19e1dfnjv51459a1f3696ad20df89c32fde99a86"
+                  "id": 1,
+                  "name": "Company Name",
+                  "description": "Company Description",
+                  "createdBy": 1,
+                  "logo": "company_logo.jpg"
                 }
               }
             }
@@ -214,34 +233,108 @@
               "application/json": {
                 "example": {
                   "error": {
-                    "code": "1294",
-                    "message": "Admin not found"
+                    "code": "123",
+                    "message": "Validation error: Invalid data provided"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/add": {
+      "post": {
+        "summary": "Create Admin",
+        "description": "Endpoint to create a new admin user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the admin user"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address of the admin user"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "Phone number of the admin user"
+                  },
+                  "companyId": {
+                    "type": "integer",
+                    "description": "ID of the company to which the admin belongs"
+                  }
+                },
+                "example": {
+                  "name": "John Doe",
+                  "email": "john.doe@example.com",
+                  "phone": "1234567890",
+                  "companyId": 1
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin created successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": {
+                    "id": 1,
+                    "name": "John Doe",
+                    "email": "john.doe@example.com",
+                    "phone": "1234567890",
+                    "companyId": 1,
+                    "createdBy": 1
+                  },
+                  "privatekey": "generatedPrivateKey"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "123",
+                    "message": "Invalid request"
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "example": {
                   "error": {
-                    "code": "1294",
-                    "message": "Unauthorized- only admin can view list of employees"
+                    "code": "890",
+                    "message": "Unauthorized - Only super admins can create admins"
                   }
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden.",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "example": {
                   "error": {
-                    "code": "456",
-                    "message": "No employee found"
+                    "code": "1294",
+                    "message": "Not authorized to create admin for this company"
                   }
                 }
               }
@@ -268,6 +361,7 @@
                   },
                   "email": {
                     "type": "string",
+                    "format": "email",
                     "example": "employee@example.com"
                   },
                   "phone": {
@@ -309,7 +403,7 @@
                 "example": {
                   "error": {
                     "code": "890",
-                    "message": "Employee already exists"
+                    "message": "Invalid employee details."
                   }
                 }
               }
@@ -350,6 +444,7 @@
         "description": "Endpoint for updating employee information.",
         "requestBody": {
           "description": "Updated employee details.",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -375,7 +470,7 @@
             "content": {
               "application/json": {
                 "example": {
-                  "message": "information updated successfully"
+                  "message": "Information updated successfully"
                 }
               }
             }
@@ -387,7 +482,7 @@
                 "example": {
                   "error": {
                     "code": "661",
-                    "message": "employee not found to update details"
+                    "message": "Employee not found to update details"
                   }
                 }
               }
@@ -478,10 +573,10 @@
     "/admin/allemp": {
       "get": {
         "summary": "Get All Employees",
-        "description": "Endpoint for retrieving all employees created by the logged-in admin.",
+        "description": "Endpoint to get a list of all employees created by the logged-in admin.",
         "responses": {
           "200": {
-            "description": "Successful operation.",
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "example": [
@@ -489,39 +584,56 @@
                     "id": 1,
                     "name": "Employee 1",
                     "email": "employee1@example.com",
-                    "phone": "1234567890"
+                    "phone": "1234567890",
+                    "companyId": 1,
+                    "createdBy": 1
                   },
                   {
                     "id": 2,
                     "name": "Employee 2",
                     "email": "employee2@example.com",
-                    "phone": "9876543210"
+                    "phone": "9876543210",
+                    "companyId": 1,
+                    "createdBy": 1
                   }
                 ]
               }
             }
           },
-          "403": {
-            "description": "Forbidden. No employee found.",
+          "400": {
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "example": {
                   "error": {
-                    "code": "456",
-                    "message": "No employee found"
+                    "code": "123",
+                    "message": "Invalid request"
                   }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized.",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "example": {
                   "error": {
-                    "code": "199",
-                    "message": "Unauthorized - not Admin"
+                    "code": "890",
+                    "message": "Unauthorized - Only admin can access this resource"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "456",
+                    "message": "No employees found"
                   }
                 }
               }
@@ -532,4 +644,3 @@
     }
   }
 }
-

@@ -5,6 +5,7 @@ const checkPreviousLogin = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const email = req.user.email;
+    const ipAddress = req.ip;
     const previousLogin = await LoginHistory.findOne({
       where: { ipAddress, userId, email, logoutTime: null },
     });

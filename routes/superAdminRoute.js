@@ -19,7 +19,6 @@ router.post("/login", loginUser, checkPreviousLogin, async (req, res) => {
     const userId = req.user.id;
     const email = req.user.email;
     const ipAddress = req.ip;
-
     await LoginHistory.create({ ipAddress, userId, email });
     res.send({ message: `user logged in successfully` });
   } catch (err) {
